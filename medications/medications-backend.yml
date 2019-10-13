@@ -8,7 +8,7 @@ spec:
       app: medications
       tier: backend
       track: stable
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -21,7 +21,7 @@ spec:
           image: "titoballon/medications-backend"
           ports:
             - name: http
-              containerPort: 4200
+              containerPort: 8000
           env:
             - name: MOCK_PROVIDER
               value: medications-provider 
