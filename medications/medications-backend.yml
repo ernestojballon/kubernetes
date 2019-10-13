@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: medications-backend
+spec:
+  selector:
+    matchLabels:
+      app: medications
+      tier: backend
+      track: stable
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: medications
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: medications-backend
+          image: "titoballon/medications-backend"
+          ports:
+            - name: http
+              containerPort: 4200
+          env:
+            - name: MOCK_PROVIDER
+              value: medications-provider 
+            - name: MOCK_PROVIDER_PORT
+              value: 8001
+      
