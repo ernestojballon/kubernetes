@@ -5,8 +5,8 @@ metadata:
 spec:
   selector:
     app: medications
-    tier: backend
+    tier: medications-backend
   ports:
   - protocol: TCP
-    port: 4200
-    targetPort: 4200
+    port: 8000
+    targetPort: 8000
