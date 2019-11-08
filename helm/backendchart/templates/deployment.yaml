@@ -1,30 +1,55 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: medications-backend
+  name: {{ include "backendchart.fullname" . }}
+  labels:
+{{ include "backendchart.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "backendchart.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "backendchart.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - name: http
+              containerPort: {{ .Values.image.containerPort }}
+          env:
+            - name: MOCK_PROVIDER
+              value: medications-provider
+            - name: MOCK_PROVIDER_PORT
+              value: "8001"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: medications-provider
 spec:
   selector:
     matchLabels:
       app: medications
-      tier: medications-backend
+      tier: mock-provider
       track: stable
   replicas: 1
   template:
     metadata:
       labels:
         app: medications
-        tier: medications-backend
+        tier: mock-provider
         track: stable
     spec:
       containers:
-        - name: medications-backend
-          image: "{{ .values.image.repository}}:v0.1.0"
+        - name: medications-provider
+          image: "int-capi-harbor.cncpl.us/tc-nextgen/medications-mock-provider:v0.1.0"
           ports:
             - name: http
-              containerPort: 8000
-          env:
-            - name: MOCK_PROVIDER
-              value: medications-provider 
-            - name: MOCK_PROVIDER_PORT
-              value: "8001"
-      
+              containerPort: 8001
