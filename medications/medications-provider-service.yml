@@ -8,5 +8,5 @@ spec:
     tier: mock-provider
   ports:
   - protocol: TCP
-    port: 8001
+    port: 80
     targetPort: 8001

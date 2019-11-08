@@ -17,16 +17,15 @@ fullnameOverride: ""
 #This is to point to the mock provider
 # to get some information required
 env:
-  providerIp: pioneering-lion-provchart #
+  providerIp: plinking-ostrich-provchart  #
   providerPort: "80"
 
 service:
   type: ClusterIP
-  port: 8000
+  port: 80
   targetPort: 8000
 
 ingress:
-  servicePort: 8000
   enabled: true
   annotations: {
     ingress.kubernetes.io/rewrite-target: /

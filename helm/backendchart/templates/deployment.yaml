@@ -25,31 +25,6 @@ spec:
               containerPort: {{ .Values.image.containerPort }}
           env:
             - name: MOCK_PROVIDER
-              value: medications-provider
+              value: {{ .Values.env.providerIp}}
             - name: MOCK_PROVIDER_PORT
-              value: "8001"
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: medications-provider
-spec:
-  selector:
-    matchLabels:
-      app: medications
-      tier: mock-provider
-      track: stable
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: medications
-        tier: mock-provider
-        track: stable
-    spec:
-      containers:
-        - name: medications-provider
-          image: "int-capi-harbor.cncpl.us/tc-nextgen/medications-mock-provider:v0.1.0"
-          ports:
-            - name: http
-              containerPort: 8001
+              value: "{{ .Values.env.providerPort }}"
